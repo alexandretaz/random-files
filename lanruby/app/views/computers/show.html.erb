@@ -1,0 +1,23 @@
+<p>
+  <b>Name:</b>
+  <%=h @computer.name %>
+</p>
+
+<p>
+  <b>Ip:</b>
+  <%=h @computer.ip %>
+</p>
+
+<p>
+  <b>Begtime:</b>
+  <%=h @computer.begTime %>
+</p>
+
+<p>
+  <b>Endtime:</b>
+  <%=h @computer.endTime %>
+</p>
+
+
+<%= link_to 'Edit', edit_computer_path(@computer) %> |
+<%= link_to 'Back', computers_path %>

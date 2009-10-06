@@ -1,0 +1,27 @@
+<h1>New computer</h1>
+
+<% form_for(@computer) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :ip %><br />
+    <%= f.text_field :ip %>
+  </p>
+  <p>
+    <%= f.label :begTime %><br />
+    <%= f.text_field :begTime %>
+  </p>
+  <p>
+    <%= f.label :endTime %><br />
+    <%= f.text_field :endTime %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', computers_path %>
