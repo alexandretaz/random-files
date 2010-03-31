@@ -1,0 +1,85 @@
+<html>
+	<head>
+		<style type="text/css">
+			#bolaObjeto {
+				position: absolute;
+				left: 200px;
+				top: 200px;
+			}
+		</style>
+		<script language="JavaScript" type="text/javascript">
+			
+			
+			
+			var bola = null;        // Objeto Bola
+			var posicaoX = 50;      // posição (x) horizontal da bola
+			var posicaoY = 50;      // posição (y) vertical da bola
+			var velocidadeX = 5;    // Velocidade horizontal  
+			var velocidadeY = 5;    // Velocidade vertical
+			var gravaux = 0.5;      // Variavel para simular gravidade
+
+
+			function move(){
+				bola.style.left=posicaoX+'px';                      // Envia para o Objeto bola a posicao X
+				bola.style.top=posicaoY+'px';                       // Envia para o Objeto bola a posicao Y
+
+				/* Verifica colisao com extremidade direita da janela */
+				if (posicaoX+128 > document.body.clientWidth){
+					velocidadeX=velocidadeX - 1;                // Reduz velocidade horizontal da bola 
+					velocidadeX=velocidadeX*(-1);               // Inverte o sentido do movimento
+					posicaoX = document.body.clientWidth - 128;
+				}
+				/* Verifica colisao com extremidade esquerda da janela */
+				if (posicaoX < 0){
+					velocidadeX=velocidadeX + 1;                // Reduz velocidade horizontal da bola
+					velocidadeX=velocidadeX*(-1);               // Inverte o sentido do movimento
+					posicaoX = 0; 
+					
+				}
+				/* Verifica colisao com inferior da janela */
+				if (posicaoY+129 > document.body.clientHeight ){
+					velocidadeY=velocidadeY - 1;		    // Reduz velocidade horizontal da bola
+					velocidadeY=velocidadeY*(-1);               // Inverte o sentido do movimento
+					posicaoY = document.body.clientHeight - 129;
+
+				}
+				/* Verifica colisao com extremidade superior da janela */
+				if (posicaoY < 0){
+					velocidadeY=velocidadeY*(-1);               // Inverte o sentido do movimento
+					posicaoY = 0
+				}
+
+				/* Reduz velocidade horizontal da bola quando toca o solo */
+
+				if (posicaoY+129 == document.body.clientHeight ){
+					velocidadeX = velocidadeX/1.005;
+				}
+				//gravaux = gravaux + 0.1;
+				velocidadeY = velocidadeY+gravaux;         // Incrementa a velocidade em Y, simulando gravidade
+				posicaoX = posicaoX + velocidadeX;         // Incrementa posicao em X
+				posicaoY = posicaoY + velocidadeY;         // incrementa posicao em Y 
+
+
+				setTimeout(move,0);                      // Serve para mudar a velocidade da animacao
+			}
+			/* funcao principal do programa */
+			function init() {
+
+				bola = document.getElementById('bolaObjeto');
+				move();
+			}
+
+
+
+
+			window.onload = init;
+		</script>
+	</head>
+	<bovelocidadeY>
+		<h1>ping pong</h1>
+		<div id="bolaObjeto">
+			<img src='ball.jpg'>
+		</div>
+
+	</bovelocidadeY>
+</html>
