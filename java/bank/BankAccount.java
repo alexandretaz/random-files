@@ -9,7 +9,7 @@ public class BankAccount
 {
     /**
      * Constructor for objects of class BankAccount
-     */q
+     */
     public BankAccount()
     {
         // initialise instance variables
