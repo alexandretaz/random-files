@@ -1,0 +1,7 @@
+mysql
+=====
+
+select name from products where id in (13,14) ;
+update products set name = substring(name,2,length(name)-1) where name like ' %' ;
+select substring(1,1,name) from products where name like ' %';
+

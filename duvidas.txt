@@ -1,0 +1,8 @@
+daemontools:
+    svc
+
+o oque é esse patch : patch -p0 < ~/devel/totomote/trunk/django_patches/filters_for_ext_relationships_and_yesterday_filter_for_dates.patch
+ ????
+
+rrd:
+    ???
