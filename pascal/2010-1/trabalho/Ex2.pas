@@ -1,6 +1,6 @@
 program Ex2;
 uses crt;
-const pessoas=3; 
+const pessoas=10; 
 type reg=record
 	nome:string;
 	codigo:integer;
@@ -12,6 +12,7 @@ var
 	temp:reg;
 	pessoa:integer;
 	codigo:integer;
+	resultado:integer;
 
 procedure ordenaPorCodigo;
 var i,j,k:integer;
@@ -32,9 +33,24 @@ begin
 		
 	end;
 end;
-function buscaBinaria(codigo:integer):boolean;
+function buscaBinaria(codigo:integer;pessoas:integer;t:tabela):integer;
+var inicio,fim,meio:integer;
 begin
-
+	inicio := 1;
+	fim := pessoas;
+	buscaBinaria:= -1; 
+	repeat
+		meio := (inicio + fim) div 2; 
+		if codigo = t[meio].codigo then
+		begin
+			buscaBinaria:=meio;
+			inicio:=fim+1;
+		end;
+		if (codigo > t[meio].codigo) then
+			inicio:=(meio + 1);
+		if (codigo < t[meio].codigo) then
+			fim:=(meio - 1);
+	until (inicio > fim);
 end;
 begin
 	while true do
@@ -50,8 +66,18 @@ begin
 			readln(t[pessoa].idade);
 			writeln;
 		end;
+		ordenaPorCodigo;
 		writeln('Entre com o código a ser pesquisado : ');
 		readln(codigo);
+		resultado :=  buscaBinaria(codigo,pessoas,t);
+		if resultado <> -1 then
+		begin
+			writeln('registro encontrado: ');
+			writeln(t[resultado].codigo,' nome : ',t[resultado].nome,' idade : ',t[resultado].idade);
+		end
+		else
+			writeln('registro não encontrado');
+
 		readkey;
 	end;
 
