@@ -1,3 +1,10 @@
+{
+Grupo #12
+Fernando Henrique Rodrigues da Silva ra: 409203876
+Eduardo Shinhei Nakazone Yonamine    ra: 409200597
+Ana Maria Rybacki de Moura	     ra: 409204338
+
+}
 program Ex1;
 uses crt;
 const pessoas=10; 
@@ -29,7 +36,7 @@ begin
 	for i:=1 to pessoas do
 		writeln('Nome : ',t[i].nome,' Salário : ',t[i].salario:1:2,' Idade :',t[i].idade);
 end;
-procedure imprimepornome;
+procedure ordenarPorNome;
 var i,j,k:integer;
 begin
 	k:=1;
@@ -50,9 +57,8 @@ begin
 		k:=k+1;
 		
 	end;
-	imprime;
 end;
-procedure imprimeporsalario;
+procedure ordenarPorSalario;
 var i,j,k:integer;
 begin
 	k:=1;
@@ -73,9 +79,8 @@ begin
 		k:=k+1;
 		
 	end;
-	imprime;
 end;
-procedure imprimeporidade;
+procedure ordenarPorIdade;
 var i,j,k:integer;
 begin
 	k:=1;
@@ -96,34 +101,41 @@ begin
 		k:=k+1;
 		
 	end;
-	imprime;
-
 end;
 
 
 begin
+	for pessoa:=1 to pessoas do
+	begin
+		writeln('Entre com o nome :');
+		readln(t[pessoa].nome);
+		writeln('Entre com a idade :');
+		readln(t[pessoa].idade);
+		writeln('Entre com o salário:');
+		readln(t[pessoa].salario);
+		writeln;
+	end;
 	while true do
 	begin
 		clrscr;
-		for pessoa:=1 to pessoas do
-		begin
-			writeln('Entre com o nome :');
-			readln(t[pessoa].nome);
-			writeln('Entre com a idade :');
-			readln(t[pessoa].idade);
-			writeln('Entre com o salário:');
-			readln(t[pessoa].salario);
-			writeln;
-		end;
 		menu;
 		readln(opcao);
 		case opcao of
 		1:
-			imprimepornome;
+			begin
+			ordenarPorNome;
+			imprime;
+			end;
 		2:
-			imprimeporsalario;
+			begin
+			ordenarPorSalario;
+			imprime;
+			end;
 		3:
-			imprimeporidade;
+			begin
+			ordenarPorIdade;
+			imprime;
+			end;
 		4:
 			exit;
 		else

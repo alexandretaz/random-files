@@ -1,3 +1,10 @@
+{
+Grupo #12
+Fernando Henrique Rodrigues da Silva ra: 409203876
+Eduardo Shinhei Nakazone Yonamine    ra: 409200597
+Ana Maria Rybacki de Moura	     ra: 409204338
+
+}
 program Ex2;
 uses crt;
 const pessoas=10; 
@@ -30,7 +37,7 @@ procedure imprime;
 var i:integer;
 begin
 	for i:=1 to pessoas do
-		writeln('RA: ',t[i].ra,' Nome: ',t[i].nome,' Av1: ',t[i].notaAv1:1:2,' Av2: ',t[i].notaAv2:1:2,' Média final: ',(t[i].notaAv1:1:2+ t[i].notaAv2:1:2)/2 , ' Faltas :',t[i].faltas);
+		writeln('RA: ',t[i].ra,' Nome: ',t[i].nome,' Av1: ',t[i].notaAv1:1:2,' Av2: ',t[i].notaAv2:1:2,' Média final: ',(t[i].notaAv1 + t[i].notaAv2)/2:1:2 , ' Faltas :',t[i].faltas);
 end;
 procedure ordenaPorRA;
 var i,j,k:integer;

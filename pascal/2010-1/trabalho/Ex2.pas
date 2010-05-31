@@ -1,3 +1,10 @@
+{
+Grupo #12
+Fernando Henrique Rodrigues da Silva ra: 409203876
+Eduardo Shinhei Nakazone Yonamine    ra: 409200597
+Ana Maria Rybacki de Moura	     ra: 409204338
+
+}
 program Ex2;
 uses crt;
 const pessoas=10; 
@@ -53,20 +60,21 @@ begin
 	until (inicio > fim);
 end;
 begin
+	for pessoa:=1 to pessoas do
+	begin
+		writeln('Entre com o código :');
+		readln(t[pessoa].codigo);
+		writeln('Entre com a nome :');
+		readln(t[pessoa].nome);
+		writeln('Entre com o idade:');
+		readln(t[pessoa].idade);
+		writeln;
+	end;
+	ordenaPorCodigo;
+
 	while true do
 	begin
 		clrscr;
-		for pessoa:=1 to pessoas do
-		begin
-			writeln('Entre com o código :');
-			readln(t[pessoa].codigo);
-			writeln('Entre com a nome :');
-			readln(t[pessoa].nome);
-			writeln('Entre com o idade:');
-			readln(t[pessoa].idade);
-			writeln;
-		end;
-		ordenaPorCodigo;
 		writeln('Entre com o código a ser pesquisado : ');
 		readln(codigo);
 		resultado :=  buscaBinaria(codigo,pessoas,t);
