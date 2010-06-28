@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=BankAccount()
+comment0.text=\nConstructor\ for\ objects\ of\ class\ BankAccount\n\n
+comment1.params=initialBalance
+comment1.target=BankAccount(double)
+comment2.params=amount
+comment2.target=void\ deposit(double)
+comment3.params=amount
+comment3.target=void\ withdraw(double)
+comment4.target=double\ getBalance()
+numComments=5
