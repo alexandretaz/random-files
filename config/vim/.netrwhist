@@ -1,0 +1,8 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/home/liquuid/devel/ccjacervo/trunk/src/ccj/acervo'
+let g:netrw_dirhist_2='/home/liquuid/devel/totomote/branches/client-refactor/packages/toto-base-10.04/debian'
+let g:netrw_dirhist_3='/home/liquuid/devel/totomote/branches/client-refactor/packages/toto-base-8.10/debian'
+let g:netrw_dirhist_4='/home/liquuid/devel/totomote/branches/client-refactor/packages/totomote-10.04/debian'
+let g:netrw_dirhist_5='/home/liquuid/devel/totomote/branches/client-refactor/packages/totomote-10.04'
+let g:netrw_dirhist_6='/home/liquuid/devel/totomote/branches/client-refactor/packages/totomote-10.04/debian'
