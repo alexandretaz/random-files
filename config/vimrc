@@ -1,6 +1,6 @@
 set encoding=utf8
 set paste
-set expandtab
+"set expandtab
 set textwidth=0
 set tabstop=4
 set softtabstop=4
@@ -8,10 +8,33 @@ set shiftwidth=4
 set autoindent
 set backspace=indent,eol,start
 set incsearch
-set ignorecase
+"set ignorecase
 set ruler
 set wildmenu
 set commentstring=\ #\ %s
 set foldlevel=0
 set clipboard+=unnamed
 syntax on
+
+"""""""""""""'
+
+set nocompatible
+set showmatch
+set showmode
+set ts=4
+set sw=4
+set smartindent
+set number
+autocmd FileType python runtime! autoload/pythoncomplete.vim
+imap <c-space> <c-x><c-o>
+:set backspace=2
+if has("autocmd")
+    autocmd FileType python set complete+=k/home/liquuid/.vim/pydiction-1.2/pydiction.py isk+=.,(
+    endif " has("autocmd"
+
+filetype plugin on
+filetype indent on
+
+" Mappings
+nmap <C-N> :noh <CR>
+
