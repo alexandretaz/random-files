@@ -1,6 +1,6 @@
 set encoding=utf8
 set paste
-"set expandtab
+set expandtab
 set textwidth=0
 set tabstop=4
 set softtabstop=4
@@ -24,7 +24,7 @@ set showmode
 set ts=4
 set sw=4
 set smartindent
-set number
+"set number
 autocmd FileType python runtime! autoload/pythoncomplete.vim
 imap <c-space> <c-x><c-o>
 :set backspace=2
