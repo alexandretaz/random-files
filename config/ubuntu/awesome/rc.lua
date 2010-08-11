@@ -16,7 +16,7 @@ beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "x-terminal-emulator"
-editor = os.getenv("EDITOR") or "editor"
+editor = "gvim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -34,7 +34,6 @@ layouts =
     awful.layout.suit.tile,
     awful.layout.suit.floating,
     awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
     awful.layout.suit.fair,
     awful.layout.suit.fair.horizontal,
     awful.layout.suit.spiral,
@@ -200,8 +199,9 @@ globalkeys = awful.util.table.join(
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
     awful.key({ modkey,           }, "F1", function () awful.util.spawn("chromium-browser") end),
-	awful.key({ modkey,           }, "F2", function () awful.util.spawn("empathy") end),
-    awful.key({ modkey,           }, "F3", function () awful.util.spawn("gwibber") end),
+    awful.key({ modkey,           }, "F2", function () awful.util.spawn(editor) end),
+	awful.key({ modkey,           }, "F3", function () awful.util.spawn("empathy") end),
+    awful.key({ modkey,           }, "F4", function () awful.util.spawn("gwibber") end),
 
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
