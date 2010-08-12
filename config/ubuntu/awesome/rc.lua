@@ -14,6 +14,38 @@ require("debian.menu")
 -- Themes define colours, icons, and wallpapers
 beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
 
+function activeram()
+     local active
+     for line in io.lines('/proc/meminfo') do
+         for key, value in string.gmatch(line, "(%w+):\ +(%d+).+") do
+             if key == "Active" then active = tonumber(value) end
+         end
+     end
+      
+     return string.format("M %.2fMB ",(active/1024))
+end
+
+jiffies = {}
+function activecpu()
+    local s = ""
+    for line in io.lines("/proc/stat") do
+        local cpu, newjiffies = string.match(line, "(cpu%d)\ +(%d+)")
+        if cpu and newjiffies then
+            if not jiffies[cpu] then
+                jiffies[cpu] = newjiffies
+            end
+            --The string.format prevents your task list from jumping around 
+            --when CPU usage goes above/below 10%
+            s = s .. string.format("%02d", newjiffies-jiffies[cpu]) .. "% "
+            jiffies[cpu] = newjiffies
+        end
+    end
+    return "cpus: " .. s 
+end
+
+awful.hooks.timer.register(10, function() memoryinfo.text = activeram() end)
+awful.hooks.timer.register(10, function() cpuinfo.text = activecpu() end)
+
 -- This is used later as the default terminal and editor to run.
 terminal = "x-terminal-emulator"
 editor = "gvim"
@@ -46,10 +78,14 @@ layouts =
 
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
-tags = {}
+tags = {
+names  = { "www", "shells", "mail", "im", 5, 6, 7, 8, 9},
+   layout = { layouts[2], layouts[1], layouts[1], layouts[4], layouts[1],
+                 layouts[6], layouts[6], layouts[5], layouts[6]
+}}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
+    tags[s] = awful.tag(tags.names, s, layouts[1])
 end
 -- }}}
 
@@ -78,6 +114,13 @@ mytextclock = awful.widget.textclock({ align = "right" })
 
 -- Create a systray
 mysystray = widget({ type = "systray" })
+
+memoryinfo = widget({ type = "textbox" })
+memoryinfo.text = ' mem'
+
+cpuinfo = widget({ type = "textbox" })
+cpuinfo.text = ' cpu'
+
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -149,6 +192,8 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         mytextclock,
+        cpuinfo,
+        memoryinfo,
         s == 1 and mysystray or nil,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
@@ -341,3 +386,4 @@ end)
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+
