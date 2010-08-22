@@ -243,7 +243,7 @@ globalkeys = awful.util.table.join(
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
-    awful.key({ modkey,           }, "F1", function () awful.util.spawn("chromium-browser") end),
+    awful.key({ modkey,           }, "F1", function () awful.util.spawn("browser") end),
     awful.key({ modkey,           }, "F2", function () awful.util.spawn(editor) end),
 	awful.key({ modkey,           }, "F3", function () awful.util.spawn("empathy") end),
     awful.key({ modkey,           }, "F4", function () awful.util.spawn("gwibber") end),
