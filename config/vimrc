@@ -1,4 +1,12 @@
-color evening
+if has("vms")
+    set nobackup      " do not keep a backup file, use versions instead
+else
+    set backup        " keep a backup file
+endif
+
+
+
+"color evening
 set encoding=utf8
 set paste
 set expandtab
@@ -31,7 +39,12 @@ imap <c-space> <c-x><c-o>
 :set backspace=2
 if has("autocmd")
     autocmd FileType python set complete+=k/home/liquuid/.vim/pydiction-1.2/pydiction.py isk+=.,(
-    endif " has("autocmd"
+endif " has("autocmd"
+
+if has("autocmd")
+   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+               \| exe "normal g'\"" | endif
+endif
 
 filetype plugin on
 filetype indent on

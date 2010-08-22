@@ -1,3 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =1
+let g:netrw_dirhist_cnt =5
 let g:netrw_dirhist_1='/home/liquuid/devel/hacktrade/trunk/hacktrade'
+let g:netrw_dirhist_2='/home/liquuid/Download'
+let g:netrw_dirhist_3='/home/liquuid'
+let g:netrw_dirhist_4='/home/liquuid/devel/hacktrade/trunk/trader/media/javascripts'
+let g:netrw_dirhist_5='/home/liquuid/trader'
