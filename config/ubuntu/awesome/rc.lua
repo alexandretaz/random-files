@@ -259,7 +259,10 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
     awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
-
+    awful.key({ modkey,    }, "\\", function () awful.util.spawn("xosview") end),
+    awful.key({ modkey,    }, "z", function () awful.util.spawn(terminal .. " -e htop") end),
+    awful.key({ modkey,    }, "a", function () awful.util.spawn(terminal .. " -e dstat") end),
+    awful.key({ modkey,    }, "s", function () awful.util.spawn(terminal .. " -e alsamixer") end),
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
 
