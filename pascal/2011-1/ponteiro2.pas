@@ -7,6 +7,7 @@ begin
     pa:=@a;
     pb:=@b;
     pc:=@c;
+    writeln('entre com dois numeros separados por espaço : ');
     readln(pa^, pb^);
     pc^:=pa^+ pb^;
     writeln(pc^);

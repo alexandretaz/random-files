@@ -1,10 +1,10 @@
 program ponteiro;
 
-uses crt
+uses crt;
 var p: ^string;
 begin
-    write('digite o nome');
+    write('digite o nome : ');
     new(p);
     readln(p^);
     writeln(p^);
-end;
+end.
