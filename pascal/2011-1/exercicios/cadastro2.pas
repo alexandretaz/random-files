@@ -23,7 +23,48 @@ begin
         readln(op);
 end;
 
+{-------- abrirarquivo ---------------}
+procedure abrirArquivo;
+begin
+	assign(arquivo, 'aluno.dat'); {$I-}
+	reset(arquivo); {$I+}
+	if ioresult=0 then
+		seek(arquivo, 0) {filesize(arquivo))}
+	else
+		rewrite(arquivo);
+end;
 
+
+{------- cadastro --------------------}
+procedure cadastrar;
+begin
+	clrscr;
+	abrirArquivo;
+	with a do
+	begin
+		write('nome do aluno: ');
+		readln(nome);
+		write('av1: ');
+		readln(av2);
+		write('av2: ');
+		readln(av2);
+	end;
+	write(arquivo, a);
+	write('registro gravadov!');
+	close(arquivo);
+end;
+{------- imprimir --------------------}
+procedure imprimir;
+begin
+	clrscr;
+	abrirArquivo;
+	while not eof(arquivo) do
+	begin
+		read(arquivo, a);
+		writeln(a.nome, ' ', a.av1:2:2, ' ',a.av2:2:2 );
+	end;
+	close(arquivo);
+end;
 
 {---------- programa principal ---------}
 begin
@@ -33,11 +74,10 @@ begin
                         writeln('Operacao invalida!!')
                 else
                 begin
-                        case op of
+			case op of
                         1 : cadastrar;
                         2 : imprimir;
                         end;
-
                 end;
                 writeln('Pressione qualquer tecla para continuar ...');
                 readkey;
