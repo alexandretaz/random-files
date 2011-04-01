@@ -5,13 +5,13 @@ uses crt;
 	{Definicao de no} 
 
 type elemento = integer;
+	pno = ^no;
 	no = record
 		info: elemento;
-		prox: ^no;
+		prox: pno;
 	end;
-
-	{sempre que estiver manipulando uma lista eh importante a inicializacao da lista e tanbem verificar se esta vazia}
-
+{sempre que estiver manipulando uma lista eh importante a inicializacao da lista e tambem verificar se esta vazia}
+var inicio, fim: pno;
 procedure criar;
 begin
 	inicio:=nil;
@@ -23,7 +23,7 @@ begin
 end;
 { procedure para inserir um elemento no final da lista}
 
-procedure inserir(e: elemento)
+procedure inserir(e: elemento);
 var aux: ^no;
 begin
 	new(aux);
@@ -43,7 +43,7 @@ begin
 end;
 { procedimento para inserir um elemento no inicio da lista }
 
-procedure inserir(e: elemento);
+procedure inserir_fim(e: elemento);
 var aux: ^no;
 begin 
 	new(aux);
@@ -58,6 +58,7 @@ begin
 	begin
 		aux^.prox:=inicio;
 		inicio:=aux;
-	end;	
+	end;
+end;
 begin
 end.
