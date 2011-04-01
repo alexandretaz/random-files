@@ -4,6 +4,8 @@ else
     set backup        " keep a backup file
 endif
 
+set directory=~/.backup-vim
+set backupdir=~/.backup-vim
 
 
 "color evening

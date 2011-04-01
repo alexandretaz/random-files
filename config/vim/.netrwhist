@@ -1,4 +1,11 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_cnt =9
 let g:netrw_dirhist_1='/home/liquuid/devel/cozinha/src/hackpanel/main'
 let g:netrw_dirhist_2='/home/liquuid/devel/cozinha/.git'
+let g:netrw_dirhist_3='/home/liquuid/devel/cozinha/src/hackpanel/templates/registration'
+let g:netrw_dirhist_4='/home/liquuid/devel/cozinha/src/hackpanel'
+let g:netrw_dirhist_5='/home/liquuid/devel/cozinha/src/hackpanel/media'
+let g:netrw_dirhist_6='/home/liquuid/devel/cozinha/src/hackpanel/media/js'
+let g:netrw_dirhist_7='/home/liquuid/devel/cozinha/src/hackpanel'
+let g:netrw_dirhist_8='/home/liquuid/devel/cozinha/src/hackpanel/main'
+let g:netrw_dirhist_9='/home/liquuid/devel/cozinha/src/hackpanel/templates/registration'
