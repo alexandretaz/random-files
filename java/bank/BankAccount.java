@@ -7,6 +7,7 @@
  */
 public class BankAccount
 {
+    private double balance;
     /**
      * Constructor for objects of class BankAccount
      */
@@ -14,6 +15,8 @@ public class BankAccount
     {
         // initialise instance variables
         balance = 0;
+        // or
+        // this(0);
     }
     public BankAccount(double initialBalance)
     {
@@ -34,5 +37,8 @@ public class BankAccount
     public double getBalance () {
         return balance;
     }
-    private double balance;
+    public void monthlyFee()
+    {
+        this.withdraw(10);
+    }
 }
