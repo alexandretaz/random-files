@@ -1,8 +1,8 @@
 #BlueJ package file
-package.editor.height=400
-package.editor.width=560
-package.editor.x=529
-package.editor.y=108
+package.editor.height=694
+package.editor.width=1316
+package.editor.x=-1
+package.editor.y=25
 package.numDependencies=0
 package.numTargets=1
 package.showExtends=true
@@ -13,8 +13,8 @@ readme.editor.x=0
 readme.editor.y=25
 target1.editor.height=814
 target1.editor.width=965
-target1.editor.x=393
-target1.editor.y=408
+target1.editor.x=383
+target1.editor.y=74
 target1.height=50
 target1.name=InputTest
 target1.showInterface=false

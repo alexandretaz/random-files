@@ -243,7 +243,9 @@ globalkeys = awful.util.table.join(
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
-    awful.key({ modkey,           }, "F1", function () awful.util.spawn("browser") end),
+    awful.key({ modkey,         }, "F5", function () awful.util.spawn("catraca.sh") end),
+    awful.key({ modkey,         }, "F6", function () awful.util.spawn("hackpanel.sh") end),
+    awful.key({ modkey,         }, "F1", function () awful.util.spawn("browser") end),
     awful.key({ modkey,           }, "F2", function () awful.util.spawn(editor) end),
 	awful.key({ modkey,           }, "F3", function () awful.util.spawn("pidgin") end),
     awful.key({ modkey,           }, "F4", function () awful.util.spawn("gwibber") end),
