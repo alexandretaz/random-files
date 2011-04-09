@@ -257,32 +257,28 @@ cat ~/Documents/TXTS/vous.txt
 	fi
 }
 
-..hacklab_svn_up(){
-    cd ~/devel/
+..hacklab_up(){
     for i in `echo agora ccjacervo hacklab`; do
-        cd $i && svn up && cd -; 
+        cd $HOME/devel/$i && svn up && cd -; 
     done
 }
 
-..hacklab_git_pull(){
-    cd ~/devel/
+..hacklab_pull(){
     for i in `echo totomote hacktrade cozinha cereja`; do
-        cd $i && git pull && cd -; 
+        cd $HOME/devel/$i && git pull && cd -; 
     done
 }
 
-..hyddro_git_pull(){
-    cd ~/devel
+..hyddro_pull(){
     for i in `echo django-extensions dlog gamequest hyddro-cms macsmc Molho parablend pylanmanager pywiispray random-files experimentos molho gamequest podbox ugs uterere-python`;
     do
-        cd $i && git pull; cd - ; 
+        cd $HOME/devel/$i && git pull; cd - ; 
     done
 }
-..hyddro_git_push(){
-    cd ~/devel
+..hyddro_push(){
     for i in `echo django-extensions dlog gamequest hyddro-cms macsmc Molho parablend pylanmanager pywiispray random-files experimentos molho gamequest podbox ugs uterere-python`;
     do
-        cd $i && git push; cd - ; 
+        cd $HOME/devel/$i && git push; cd - ; 
     done
 }
 
