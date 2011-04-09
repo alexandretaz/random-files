@@ -1,0 +1,304 @@
+#!/bin/bash
+
+
+colors=1
+
+dump='lynx -dump      -nolist -crawl -width=300 -accept_all_cookies'
+list='lynx -dump -width=300 -accept_all_cookies'
+post='lynx -post-data -nolist -crawl -width=300 -accept_all_cookies'
+html='lynx -source'
+tmp="${TMPDIR:-~/tmp}"
+
+
+url='s| |+|g;s|&|%26|g'
+
+echocol(){ [ "$colors" != 1 ] && echo -e "$*" ||
+         echo -e "\033[33;1m$*"; echo -ne "\033[m"; }
+
+..fup2low(){
+sed 'y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/
+     y/ÀÁÂÃÄÅÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÇÑ/àáâãäåèéêëìíîïòóôõöùúûüçñ/' "$@"; }
+
+..flow2up(){
+sed 'y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/
+     y/àáâãäåèéêëìíîïòóôõöùúûüçñ/ÀÁÂÃÄÅÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÇÑ/' "$@"; }
+
+..showcores(){
+local frente fundo bold c
+for frente in 0 1 2 3 4 5 6 7; do for bold in '' ';1'; do
+  for fundo in 0 1 2 3 4 5 6 7; do
+    c="4$fundo;3$frente"; echo -ne "\033[$c${bold}m $c${bold:-  } \033[m"
+  done; echo
+done; done
+}
+
+..multiren(){
+[ "$3" ] || { echo 'uso: ..multiren antiga nova arquivo(s)'; return; }
+local A p1="$1" p2="$2"; shift 2; [ "$p1" = "$p2" ] && return
+for A in "$@"; do [ "$A" != "${A%$p1}" ] && mv -v "$A" "${A%$p1}$p2"; done
+}
+
+..replace(){
+[ "$3" ] || { echo 'uso: ..replace antiga nova arquivo(s)'; return; }
+local A T p1="$1" p2="$2"; shift 2; for A in "$@"; do
+  grep -qs "$p1" "$A" || continue ; T=$ZZTMP${A##*/}.$$ ; cp "$A" "$T" &&
+  sed "sÂ§$p1Â§$p2Â§g" "$T" > "$A" && rm -f "$T" && echo "feito $A"; done
+}
+
+
+..arrumanome(){
+[ "$1" ] || { echo 'uso: ..arrumanome arquivo(s)'; return; }
+local A A1 A2 D i; for A in "$@"; do [ -f "$A" ] || continue;
+  A1="${A##*/}"; D="${A%/*}"; D="${D%$A1}" ; A2=`echo $A1 | sed "s/[\"']//g"'
+  y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/;s/^-/_/
+  y/ÀàÁáÂâÃãÄÅäåÈèÉéÊêËëÌìÍíÎîÏïÇçÑñ/aaaaaaaaaaaaeeeeeeeeiiiiiiiiccnn/
+  y/ÒòÓóÔôÕõÖöÙùÚúÛûÜüß¢Ð£Øø§µÝý¥¹²³/oooooooooouuuuuuuubcdloosuyyy123/
+  s/[^a-z0-9._-]/_/g;s/__*/_/g;s/_\([.-]\)/\1/g;s/\([.-]\)_/\1/g'`
+  [ "$A1" = "$A2" ] && continue ; [ -f "${D:-.}/$A2" ] && {
+    i=1 ; while [ -f "${D:-.}/$A2.$i" ]; do i=$((i+1)); done ; A2="$A2.$i"; }
+  mv -v -- "$A" "${D:-.}/$A2"; done
+}
+
+
+..dolar(){
+$dump 'http://br.invertia.com/mercados/divisas/tiposdolar.asp' |
+sed 's/^ *//;/Data:/,/Turismo/!d;/percent/d;s/  */ /g
+     s/.*Data: \(.*\)/\1 compra   venda   hora/;s|^[1-9]/|0&|;
+     s,^\([0-9][0-9]\)/\([0-9]/\),\1/0\2,
+     s/^D.lar \|- Corretora//g;s/ [-+]\?[0-9.]\+ %$//
+     s/al /& /;s/lo /&   /;s/mo /&    /;s/ \([0-9]\) / \1.000 /
+     s/\.[0-9]\>/&0/g;s/\.[0-9][0-9]\>/&0/g;/^[^0-9]/s/[0-9] /&  /g'
+}
+
+..cep(){
+[ "$3" ] || { echo 'uso: ..cep estado cidade rua'; return; }
+local URL='http://www.correios.com.br/servicos/cep/Resultado_Log.cfm'
+local r c e="$1"; c=`echo "$2"| sed "$url"`
+shift  ;  shift ; r=`echo "$*"| sed "$url"`
+echo "UF=$e&Localidade=$c&Tipo=&Logradouro=$r" | $post "$URL" |
+sed -n '/^ *UF:/,/^$/{ /PÃ¡gina Anter/d; s/.*Ã³xima PÃ¡g.*/...CONTINUA/; p;}'
+}
+
+
+..dominiopais(){ zzzz -z $1 dominiopais && return
+[ ."$1" ] || { echo 'uso: ..dominiopais [.]código|texto'; return; }
+local i1 i2 a='/usr/share/zoneinfo/iso3166.tab' p=${1#.}
+[ $1 != $p ] && { i1='^'; i2='^\.'; }
+[ -f $a ] && { echocol 'local:'; sed "/^#/d;/$i1$p/I!d" $a; }
+}
+
+..noticiassec(){
+local URL limite n=5 s='bsctf'; limite="sed ${n}q"; [ "$1" ] && s="$1"
+[ "$s" != "${s#*b}" ] && { URL='http://www.linuxsecurity.com.br/share.php'
+  echo ; echocol "* LinuxSecurity Brasil ($URL):"; $dump $URL |
+  sed -n '/item/,$s,.*<title>\(.*\)</title>,\1,p' | $limite ; }
+[ "$s" != "${s#*s}" ] && {
+  URL='http://www.linuxsecurity.com/linuxsecurity_advisories.rdf'
+  echo ; echocol "* Linux Security ($URL):"; $dump $URL |
+  sed -n '/item/,$s,.*<title>\(.*\)</title>,\1,p' | $limite ; }
+[ "$s" != "${s#*c}" ] && { URL='http://www.cert.org/channels/certcc.rdf'
+  echo ; echocol "* CERT/CC ($URL):"; $dump $URL |
+  sed -n '/item/,$s,.*<title>\(.*\)</title>,\1,p' | $limite ; }
+[ "$s" != "${s#*t}" ] && { URL='http://linuxtoday.com/security/index.html'
+  echo ; echocol "* Linux Today - Security ($URL):"; $html $URL |
+  sed -n '/class="nav"><B>/s/<[^>]*>//gp' | $limite ; }
+[ "$s" != "${s#*f}" ] && { URL='http://www.securityfocus.com/bid'
+  echo ; echocol "* SecurityFocus Vulns Archive ($URL):"; $dump $URL |
+  sed -n 's/^ *\([0-9]\{4\}-[0-9][0-9]-[0-9][0-9]\)/\1/p' | $limite ; }
+}
+
+
+
+..mvpicmd5(){
+while true;
+do
+	for i in *.jpg ;
+	do mv -f $i `md5sum $i | awk '{print $1 }'`.jpg;
+	done;
+	sleep 10;
+done
+}
+
+..mvpic(){
+while true;
+do
+       	for i in *.jpg *JPG;
+	do mv -v $i `ls -li $i| awk '{ print $1}'`.jpg; 
+	done;
+        for r in *.jpg*~ ;
+        do mv -v -f $r `md5sum $r | awk '{print $1 }'`.jpg;
+        done;
+	sleep 10;
+done
+}
+					
+
+
+
+..soc(){ ssh liquid@socrates.if.usp.br; }
+
+..up2low(){
+for f in `\ls`;
+do
+   LC_FILENAME=`echo $f | tr 'A-Z' 'a-z'`;
+   mv $f  $LC_FILENAME;
+done
+}
+..low2up(){
+for f in `\ls`;
+do
+	   LC_FILENAME=`echo $f | tr 'a-z' 'A-Z'`;
+           mv $f  $LC_FILENAME;
+done
+
+}
+..startx(){
+for i in `seq 0 10`;
+do 
+if [ -e /tmp/.X$i-lock ]
+then
+	echo "X11 existe em $i"
+else
+ 	exec startx -- :$i
+	return 0 ;
+fi
+done;
+}
+..showrpmdeps (){
+[ "$1" ] || { echo 'uso: ..showrpmdeps arquivo_binário'; return; }
+rpm -qf `ldd $1 | awk '{print$3}'` | sort | uniq
+}
+
+..showpacmandeps (){
+
+[ "$1" ] || { echo 'uso: ..showpacmandeps arquivo_binário'; return; }
+for a in `for i in \`ldd $1 | awk '{ print $3}' | grep  ^/\`; do pacman -Qo $i; done | awk '{ print $4}' | sort | uniq`; do echo -n "\"$a\" " ;done; echo
+}
+
+
+..mkdate (){
+mkdir `date +%Y%m%d-%H:%M`
+}
+
+..zipfoto (){
+for i in `\ls *jpg *JPG `; do convert -verbose -quality 75 $i $i.tmp && mv -f $i.tmp $i;done
+}
+..zipvideo (){
+for i in `\ls *mov`; do name=`basename $i .mov` && mencoder -ovc lavc $i -o $name.avi && rm -f $i;done
+}
+..flickrfoto (){
+for i in `\ls *jpg *JPG `; do convert -verbose -quality 75 -resize 800x600 $i f$i;done
+}
+..video2mp4 () {
+mencoder -o $1.mp4  -oac mp3lame   -ovc x264 -x264encopts bitrate=2000 $1
+}
+
+
+..commit () {
+
+cd ~/.svn-liquuid
+#time svn ci -m"date +%Y%m%d-%H:%M" || ( git commit -a -m"date +%Y%m%d-%H:%M" && git push ) 
+git commit -a -m"date +%Y%m%d-%H:%M" && git push
+cd -
+}
+..status () { 
+cd ~/.svn-liquuid
+#time svn status || time git status
+time git status
+cd -
+}
+
+..up () { 
+cd ~/.svn-liquuid
+#time svn up || time git pull
+time git pull
+cd -
+} 
+
+# Script para conversão de caracteres acentuados ASCII ou UTF-8 para HTML compatível com padrões w3c
+#
+# Todos os direitos resevados : Fernando Henrique(C) 2006
+# Novas versões
+# http://xsl4v3.metareciclagem.org
+# Distribuído sob os termos da BSD:
+# http://www.opensource.org/licenses/bsd-license.php
+#
+
+..acentos2html () { 
+sed -i -e  "s/Á/\&Aacute\;/g"  -e  "s/á/\&aacute;/g"  -e  "s/Â/\&Acirc;/g"  -e  "s/â/\&acirc;/g"  -e  "s/À/\&Agrave;/g"  -e  "s/à/\&agrave;/g"  -e  "s/Å/\&Aring;/g" -e "s/å/\&aring;/g" -e "s/Ã/\&Atilde;/g" -e "s/ã/\&atilde;/g" -e "s/Ä/\&Auml;/g" -e "s/ä/\&auml;/g" -e "s/Æ/\&AElig;/g" -e "s/æ/\&aelig;/g" -e "s/É/\&Eacute;/g" -e "s/é/\&eacute;/g" -e "s/Ê/\&Ecirc;/g" -e "s/ê/\&ecirc;/g" -e "s/È/\&Egrave;/g" -e "s/è/\&egrave;/g" -e "s/Ë/\&Euml;/g" -e "s/ë/\&euml;/g" -e "s/Ð/\&ETH;/g" -e "s/ð/\&eth;/g" -e "s/Í/\&Iacute;/g" -e "s/í/\&iacute;/g" -e "s/Î/\&Icirc;/g" -e "s/î/\&icirc;/g" -e "s/Ì/\&Igrave;/g" -e "s/ì/\&igrave;/g" -e "s/Ï/\&Iuml;/g" -e "s/ï/\&iuml;/g" -e "s/Ó/\&Oacute;/g" -e "s/ó/\&oacute;/g" -e "s/Ô/\&Ocirc;/g" -e "s/ô/\&ocirc;/g" -e "s/Ò/\&Ograve;/g" -e "s/ò/\&ograve;/g" -e "s/Ø/\&Oslash;/g" -e "s/ø/\&oslash;/g" -e "s/Õ/\&Otilde;/g" -e "s/õ/\&otilde;/g" -e "s/Ö/\&Ouml;/g" -e "s/ö/\&ouml;/g" -e "s/Ú/\&Uacute;/g" -e "s/ú/\&uacute;/g" -e "s/Û/\&Ucirc;/g" -e "s/û/\&ucirc;/g" -e "s/Ù/\&Ugrave;/g" -e "s/ù/\&ugrave;/g" -e "s/Ü/\&Uuml;/g" -e "s/ü/\&uuml;/g" -e "s/Ç/\&Ccedil;/g" -e "s/ç/\&ccedil;/g" -e "s/Ñ/\&Ntilde;/g" -e "s/ñ/\&ntilde;/g" -e "s/®/\&reg;/g" -e "s/©/\&copy;/g" -e "s/Ý/\&Yacute;/g" -e "s/ý/\&yacute;/g" -e "s/Þ/\&THORN;/g" -e "s/þ/\&thorn;/g" -e "s/ß/\&szlig;/g" $@
+}
+
+
+..mountpvt () { 
+echo "pass: "
+read $i
+echo $i
+cat ~/Documents/TXTS/vous.txt
+}
+..ex ()
+{
+	if [ -f $1 ] ; then
+		case $1 in
+			*.tar.bz2)   tar xjf $1   ;;
+			*.tar.gz)    tar xzf $1   ;;
+			*.bz2)       bunzip2 $1   ;;
+			*.rar)       rar x $1     ;;
+			*.gz)        gunzip $1    ;;
+			*.tar)       tar xf $1    ;;
+			*.tbz2)      tar xjf $1   ;;
+			*.tgz)       tar xzf $1   ;;
+			*.zip)       unzip $1     ;;
+			*.Z)         uncompress $1;;
+			*.7z)        7z x $1      ;;
+			*)           echo "'$1' cannot be extracted via ex()" ;;
+		esac
+	else
+		echo "'$1' is not a valid file"
+	fi
+}
+
+..hacklab_up(){
+    for i in `echo agora ccjacervo hacklab`; do
+        cd $HOME/devel/$i && svn up && cd -; 
+    done
+}
+
+..hacklab_pull(){
+    for i in `echo totomote hacktrade cozinha cereja`; do
+        cd $HOME/devel/$i && git pull && cd -; 
+    done
+}
+
+..hyddro_pull(){
+    for i in `echo django-extensions dlog gamequest hyddro-cms macsmc Molho parablend pylanmanager pywiispray random-files experimentos molho gamequest podbox ugs uterere-python`;
+    do
+        cd $HOME/devel/$i && git pull; cd - ; 
+    done
+}
+..hyddro_push(){
+    for i in `echo django-extensions dlog gamequest hyddro-cms macsmc Molho parablend pylanmanager pywiispray random-files experimentos molho gamequest podbox ugs uterere-python`;
+    do
+        cd $HOME/devel/$i && git push; cd - ; 
+    done
+}
+
+..liquuid_pull(){
+    cd ~/
+    for i in `echo Desktop Pictures Documents`; do
+        cd $i && git pull && cd -; 
+    done
+}
+
+..liquuid_push(){
+    cd ~/
+    for i in `echo Desktop Pictures Documents`; do
+        cd $i && git push && cd -; 
+    done
+}
+
+..liquuid_commit(){
+    cd ~/
+    for i in `echo Desktop Pictures Documents`; do
+        cd $i && git commit -a -m 'commitando' && cd -; 
+    done
+}
