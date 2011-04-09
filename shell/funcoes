@@ -284,3 +284,20 @@ cat ~/Documents/TXTS/vous.txt
     done
 }
 
+..liquuid_pull(){
+    for i in `echo Desktop Pictures Documents`; do
+        cd $i && git pull && cd -; 
+    done
+}
+
+..liquuid_push(){
+    for i in `echo Desktop Pictures Documents`; do
+        cd $i && git push && cd -; 
+    done
+}
+
+..liquuid_commit(){
+    for i in `echo Desktop Pictures Documents`; do
+        cd $i && git commit -a -m 'commitando' && cd -; 
+    done
+}
