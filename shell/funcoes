@@ -272,12 +272,14 @@ cat ~/Documents/TXTS/vous.txt
 }
 
 ..hyddro_git_pull(){
+    cd ~/devel
     for i in `echo django-extensions dlog gamequest hyddro-cms macsmc Molho parablend pylanmanager pywiispray random-files experimentos molho gamequest podbox ugs uterere-python`;
     do
         cd $i && git pull; cd - ; 
     done
 }
 ..hyddro_git_push(){
+    cd ~/devel
     for i in `echo django-extensions dlog gamequest hyddro-cms macsmc Molho parablend pylanmanager pywiispray random-files experimentos molho gamequest podbox ugs uterere-python`;
     do
         cd $i && git push; cd - ; 
@@ -285,18 +287,21 @@ cat ~/Documents/TXTS/vous.txt
 }
 
 ..liquuid_pull(){
+    cd ~/
     for i in `echo Desktop Pictures Documents`; do
         cd $i && git pull && cd -; 
     done
 }
 
 ..liquuid_push(){
+    cd ~/
     for i in `echo Desktop Pictures Documents`; do
         cd $i && git push && cd -; 
     done
 }
 
 ..liquuid_commit(){
+    cd ~/
     for i in `echo Desktop Pictures Documents`; do
         cd $i && git commit -a -m 'commitando' && cd -; 
     done
