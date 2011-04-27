@@ -50,6 +50,28 @@ describe User do
     user_with_duplicate_email = User.new(@attr)
     user_with_duplicate_email.should_not be_valid
   end
+
+  
+  describe "password encryption" do
+    before(:each) do
+      @user = User.create!(@attr)
+    end
+  
+    it "should have an encrypted password attribute" do
+      @user.should respond_to(:encrypted_password)
+    end
+    it "should set the encrypted password" do
+      @user.encrypted_password.should_not be_blank
+    end
+  end
+  describe "has_password? method" do
+    it "should be true if the passwords match" do
+      @user.has_password?(@attr[:password]).should be_true
+    end
+    it "should be false if the passwords dont match" do
+      @user.has_password?("invalid").should be_false
+    end
+  end
 end
   
 describe "password validations" do
@@ -66,4 +88,5 @@ describe "password validations" do
       hash = @attr.merge(:password => long, :password_confirmation => long)
       User.new(hash).should_not be_valid
     end
-end 
+end
+
