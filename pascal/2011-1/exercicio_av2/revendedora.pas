@@ -68,11 +68,12 @@ begin
 		fim:=aux;
 	end;
 end;
+{
 function primeiro(inicio: lista): carro;
 begin
     primeiro:=inicio^.dados;
 end;
-
+}
 procedure imprimir_tudo(l: lista);
 var temp: carro;
 begin
@@ -83,7 +84,25 @@ begin
         imprimir_tudo(l^.prox);
     end;
 end;
+procedure cadastro_carro(var l: lista; c: carro);
+begin
+    clrscr;
 
+    writeln('Cadastro de Automoveis');
+    readln;
+    write('Modelo: ');
+    readln(c.modelo);
+    
+    write('Marca: ');
+    readln(c.marca);
+
+    write('Cor: ');
+    readln(c.cor);
+
+    write('Ano: ');
+    readln(c.ano);
+
+end;
 begin
     inicializa_lista;
 
@@ -91,7 +110,19 @@ begin
     while (comando <> 6) do
     begin
         mostrar_menu;
-        {
+        case comando of
+            1:  begin 
+                    cadastro_carro(inicio, c);
+                    comando:=0;
+                    continue;
+                end;
+            5:  begin 
+                    cadastro_carro(inicio, c);
+                    comando:=0;
+                    continue;
+                end;
+       end;
+        { 
         c.modelo:='fusca ';
         inserir(inicio, c);
         c.modelo:='uno ';
@@ -101,6 +132,7 @@ begin
         }
         {writeln(inicio^.dados);}
         imprimir_tudo(inicio);
+
         read(comando);
     end;
 end.
