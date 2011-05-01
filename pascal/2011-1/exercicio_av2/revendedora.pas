@@ -84,10 +84,30 @@ begin
         imprimir_tudo(l^.prox);
     end;
 end;
+
+
+procedure abrirArquivo;
+begin
+    assign(arq, 'dados.dat'); {$I-}
+    reset(arq); {$I+}
+
+    if ioresult=0 then
+    begin
+        seek(arq, filesize(arq)); 
+    end
+else
+    begin
+        writeln('arquivo non ecxiste');
+        rewrite(arq);
+        seek(arq, 0);
+    end;
+end;
+
+
 procedure cadastro_carro(var l: lista; c: carro);
 begin
     clrscr;
-
+    abrirArquivo;
     writeln('Cadastro de Automoveis');
     readln;
     write('Modelo: ');
@@ -101,8 +121,31 @@ begin
 
     write('Ano: ');
     readln(c.ano);
+    
+    write(arq, c);
+    write('registro gravado!');
+    close(arq);
 
 end;
+
+procedure listar;
+var c: carro;
+begin
+    clrscr;
+    abrirArquivo;
+    seek(arq, 0);
+    while not eof(arq) do
+    begin
+        read(arq, c);
+        writeln(c.codigo, ' ', c.modelo, ' ', c.marca, ' ',c.cor, ' ', c.ano);
+    end;
+    close(arq);
+    writeln;
+    writeln('Tecla algo para continuar');
+end;
+
+
+
 begin
     inicializa_lista;
 
@@ -117,8 +160,10 @@ begin
                     continue;
                 end;
             5:  begin 
-                    cadastro_carro(inicio, c);
+                    listar;
                     comando:=0;
+                    readln;
+                    readln;
                     continue;
                 end;
        end;
@@ -131,7 +176,7 @@ begin
         inserir(inicio, c);
         }
         {writeln(inicio^.dados);}
-        imprimir_tudo(inicio);
+        {imprimir_tudo(inicio);}
 
         read(comando);
     end;

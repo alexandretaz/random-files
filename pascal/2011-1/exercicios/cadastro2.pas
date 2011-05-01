@@ -49,17 +49,17 @@ begin
     clrscr;
     abrirArquivo;
     with a do
-begin
-    write('nome do aluno: ');
-    readln(nome);
-    write('av1: ');
-    readln(av1);
-    write('av2: ');
-    readln(av2);
-end;
-write(arquivo, a);
-write('registro gravadov!');
-close(arquivo);
+    begin
+        write('nome do aluno: ');
+        readln(nome);
+        write('av1: ');
+        readln(av1);
+        write('av2: ');
+        readln(av2);
+    end;
+    write(arquivo, a);
+    write('registro gravadov!');
+    close(arquivo);
 end;
 {------- imprimir --------------------}
 procedure imprimir;
@@ -68,11 +68,11 @@ begin
     abrirArquivo;
     seek(arquivo, 0);
     while not eof(arquivo) do
-begin
-    read(arquivo, a);
-    writeln(a.nome, ' ', a.av1:2:2, ' ',a.av2:2:2 );
-end;
-close(arquivo);
+    begin
+        read(arquivo, a);
+        writeln(a.nome, ' ', a.av1:2:2, ' ',a.av2:2:2 );
+    end;
+    close(arquivo);
 end;
 
 {---------- programa principal ---------}
