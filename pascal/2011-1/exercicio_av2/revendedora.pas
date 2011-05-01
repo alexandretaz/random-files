@@ -1,23 +1,38 @@
 program revendedora;
 uses crt;
 type
-    bloco =^no;
-    aluno = record
-        nome: string;
-        av1, av2:real;
+    carro = record
+        marca: string;
+        modelo: string;
+        cor: string;
+        ano: integer;
+        codigo: integer;
+    end;
+    plista = ^no;
+    lista = plista;
+    no = record
+        dados: carro;
+        {dados: integer;}
+        prox: lista;
+    end;
+
+    arquivo = file of carro;
+
+var inicio, fim: lista;
+    arq:arquivo;
+    c:carro;
+    comando: integer;
+
+procedure inicializa_lista;
+begin
+    inicio:=nil;
+    fim:=nil;
 end;
 
-    no = record
-        info: aluno;
-        prox: bloco;
-    end;
-    arquivo = file of aluno;
-
-var inicio, fim, aux: bloco;
-    arq:arquivo;
-    a:aluno;
-
-    comando: integer;
+function inicio_eh_nulo: boolean;
+begin
+	inicio_eh_nulo:=(inicio=nil);
+end;
 
 procedure mostrar_menu;
 begin
@@ -34,11 +49,58 @@ begin
     writeln('Entre com valor: ');
 
 end;
+
+procedure inserir(var l: lista; c: carro);
+var aux: lista;
 begin
+	new(aux);
+	aux^.dados:=c;
+	aux^.prox:=nil;
+
+	if inicio_eh_nulo then
+	begin
+		inicio:=aux;
+		fim:=aux;
+	end
+	else
+	begin
+		fim^.prox:=aux;
+		fim:=aux;
+	end;
+end;
+function primeiro(inicio: lista): carro;
+begin
+    primeiro:=inicio^.dados;
+end;
+
+procedure imprimir_tudo(l: lista);
+var temp: carro;
+begin
+    if (l <> nil) then
+    begin
+        temp:=l^.dados;
+        write(temp.modelo);
+        imprimir_tudo(l^.prox);
+    end;
+end;
+
+begin
+    inicializa_lista;
+
     comando := 0;
     while (comando <> 6) do
     begin
         mostrar_menu;
+        {
+        c.modelo:='fusca ';
+        inserir(inicio, c);
+        c.modelo:='uno ';
+        inserir(inicio, c);
+        c.modelo:='porche ';
+        inserir(inicio, c);
+        }
+        {writeln(inicio^.dados);}
+        imprimir_tudo(inicio);
         read(comando);
     end;
 end.
