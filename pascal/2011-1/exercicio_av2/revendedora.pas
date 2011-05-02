@@ -22,7 +22,9 @@ var inicio, fim: lista;
     arq:arquivo;
     c:carro;
     comando: integer;
-
+    temp: string;
+    temp_int: integer;
+    ocorrencias: boolean;
 procedure inicializa_lista;
 begin
     inicio:=nil;
@@ -103,7 +105,6 @@ else
     end;
 end;
 
-
 procedure cadastro_carro(var l: lista; c: carro);
 begin
     clrscr;
@@ -128,24 +129,155 @@ begin
 
 end;
 
-procedure listar;
-var c: carro;
+
+procedure cadastro_carro_lista(var l: lista; c: carro);
 begin
     clrscr;
+    writeln('Cadastro de Automoveis');
+    readln();
+    writeln();
+    write('Modelo: ');
+    readln(c.modelo);
+    
+    write('Marca: ');
+    readln(c.marca);
+
+    write('Cor: ');
+    readln(c.cor);
+
+    write('Ano: ');
+    readln(c.ano);
+    
+    inserir(l, c);
+
+    write('registro gravado!');
+
+end;
+
+
+procedure imprime_carro(var c:carro);
+begin
+    writeln(c.codigo, ' ', c.modelo, ' ', c.marca, ' ',c.cor, ' ', c.ano)
+end;
+
+function listar(var sub_comando: integer; parametro: string): boolean;
+var c: carro;
+    ocorrencias: boolean;
+begin
+    clrscr;
+    ocorrencias:= false;
     abrirArquivo;
     seek(arq, 0);
     while not eof(arq) do
     begin
         read(arq, c);
-        writeln(c.codigo, ' ', c.modelo, ' ', c.marca, ' ',c.cor, ' ', c.ano);
+        {filtros}
+        if (( sub_comando = 0 )and (parametro = '')) then
+        begin
+            imprime_carro(c);
+            ocorrencias:=true;
+        end
+        else
+            begin
+                case sub_comando of
+                    1: begin
+                        if (c.marca = parametro) then
+                            begin
+                                imprime_carro(c);
+                                ocorrencias:=true;
+                            end;
+                       end;
+                        
+                    2: begin
+                        if (c.modelo = parametro) then
+                            begin
+                                imprime_carro(c);
+                                ocorrencias:=true;
+                            end;
+                       end;
+                    
+                    3: begin
+                        if (c.cor = parametro) then
+                            begin
+                                imprime_carro(c);
+                                ocorrencias:=true;
+                            end;
+                       end;
+                end;
+            end;
     end;
     close(arq);
     writeln;
-    writeln('Tecla algo para continuar');
+    listar:=ocorrencias;
 end;
 
+procedure listar_lista(var l: lista; sub_comando: integer; parametro: string; ocorrencias: boolean);
+var temp: carro;
+begin
+    if (l <> nil) then
+    begin
+        c:=l^.dados;
+        if (( sub_comando = 0 )and (parametro = '')) then
+        begin
+            imprime_carro(c);
+            ocorrencias:=true;
+        end
+        else
+            begin
+                case sub_comando of
+                    1: begin
+                        if (c.marca = parametro) then
+                            begin
+                                imprime_carro(c);
+                                ocorrencias:=true;
+                            end;
+                       end;
+                        
+                    2: begin
+                        if (c.modelo = parametro) then
+                            begin
+                                imprime_carro(c);
+                                ocorrencias:=true;
+                            end;
+                       end;
+                    
+                    3: begin
+                        if (c.cor = parametro) then
+                            begin
+                                imprime_carro(c);
+                                ocorrencias:=true;
+                            end;
+                       end;
+                end;
+            end;
+    listar_lista(l^.prox, sub_comando, parametro, ocorrencias );
+    end;
+ end;
 
 
+procedure pesquisa;
+var sub_comando: integer;
+    parametro: string;
+begin
+    clrscr;
+    writeln('Pesquisa');
+    writeln();
+    writeln('1 - Por marca');
+    writeln('2 - Por modelo');
+    writeln('3 - Por cor');
+    writeln();
+    write('Entre com valor: ');
+    readln(sub_comando);
+    write('Entre com a palavra chave: ');
+    readln(parametro);
+    listar_lista(inicio, sub_comando, parametro, ocorrencias);
+    {if (not listar_lista(inicio, sub_comando, parametro, ocorrencias)) then
+        begin
+            writeln('Nao encontrado');
+            writeln();
+        end;}
+end;
+{----------------------------------------------------------------------}
 begin
     inicializa_lista;
 
@@ -155,13 +287,25 @@ begin
         mostrar_menu;
         case comando of
             1:  begin 
-                    cadastro_carro(inicio, c);
+                    cadastro_carro_lista(inicio, c);
                     comando:=0;
                     continue;
                 end;
-            5:  begin 
-                    listar;
+            2:  begin
+                    pesquisa();
                     comando:=0;
+                    writeln('Tecle algo para continuar');
+                    readln;
+                    continue;
+                end;
+            5:  begin 
+                    temp:='';
+                    temp_int:=0;
+                    ocorrencias:=false;
+                    listar_lista(inicio, temp_int, temp, ocorrencias);
+                    comando:=0;
+                    {imprimir_tudo(inicio);}
+                    writeln('Tecle algo para continuar');
                     readln;
                     readln;
                     continue;
