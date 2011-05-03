@@ -70,8 +70,7 @@ begin
 		fim:=aux;
 	end;
 end;
-{
-function primeiro(inicio: lista): carro;
+{function primeiro(inicio: lista): carro;
 begin
     primeiro:=inicio^.dados;
 end;
@@ -105,37 +104,35 @@ else
     end;
 end;
 
-procedure cadastro_carro(var l: lista; c: carro);
+procedure codigo_unico(l: lista; codigo: integer);
+var temp: carro;
 begin
-    clrscr;
-    abrirArquivo;
-    writeln('Cadastro de Automoveis');
-    readln;
-    write('Modelo: ');
-    readln(c.modelo);
-    
-    write('Marca: ');
-    readln(c.marca);
-
-    write('Cor: ');
-    readln(c.cor);
-
-    write('Ano: ');
-    readln(c.ano);
-    
-    write(arq, c);
-    write('registro gravado!');
-    close(arq);
-
+    if ((l <> nil) and (ocorrencias=false)) then
+    begin
+        temp:=l^.dados;
+        if (temp.codigo = codigo) then
+            ocorrencias:=true;
+        codigo_unico(l^.prox, codigo);
+    end;
 end;
-
-
 procedure cadastro_carro_lista(var l: lista; c: carro);
 begin
     clrscr;
     writeln('Cadastro de Automoveis');
     readln();
     writeln();
+
+    write('Codigo: ');
+    ocorrencias:=true;
+    while (ocorrencias=true) do
+    begin
+        ocorrencias:=false;
+        c.codigo:=random(9999);
+        codigo_unico(l, c.codigo);
+    end;
+    
+    writeln(c.codigo);
+
     write('Modelo: ');
     readln(c.modelo);
     
@@ -254,7 +251,6 @@ begin
     end;
  end;
 
-
 procedure pesquisa;
 var sub_comando: integer;
     parametro: string;
@@ -271,12 +267,11 @@ begin
     write('Entre com a palavra chave: ');
     readln(parametro);
     listar_lista(inicio, sub_comando, parametro, ocorrencias);
-    {if (not listar_lista(inicio, sub_comando, parametro, ocorrencias)) then
-        begin
-            writeln('Nao encontrado');
-            writeln();
-        end;}
+
+    if (ocorrencias = false) then
+        writeln('Carro nao encontrado');
 end;
+
 {----------------------------------------------------------------------}
 begin
     inicializa_lista;
@@ -304,6 +299,7 @@ begin
                     ocorrencias:=false;
                     listar_lista(inicio, temp_int, temp, ocorrencias);
                     comando:=0;
+                    ocorrencias:=false;
                     {imprimir_tudo(inicio);}
                     writeln('Tecle algo para continuar');
                     readln;
