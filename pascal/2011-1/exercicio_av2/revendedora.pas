@@ -25,6 +25,8 @@ var inicio, fim: lista;
     temp: string;
     temp_int: integer;
     ocorrencias: boolean;
+    cod: integer;
+
 procedure inicializa_lista;
 begin
     inicio:=nil;
@@ -115,6 +117,22 @@ begin
         codigo_unico(l^.prox, codigo);
     end;
 end;
+
+procedure seleciona_carro(l: lista; codigo: integer);
+var temp: carro;
+begin
+    if ((l <> nil) and (ocorrencias=false)) then
+    begin
+        temp:=l^.dados;
+        if (temp.codigo = codigo) then
+        begin
+            ocorrencias:=true;
+            c:=temp;
+        end;
+        seleciona_carro(l^.prox, codigo);
+    end;
+end;
+
 procedure cadastro_carro_lista(var l: lista; c: carro);
 begin
     clrscr;
@@ -288,6 +306,35 @@ begin
                 end;
             2:  begin
                     pesquisa();
+                    comando:=0;
+                    writeln('Tecle algo para continuar');
+                    readln;
+                    continue;
+                end;
+
+            3:  begin
+                    writeln;
+                    write('digite o codigo: ');
+                    readln(cod);
+                    ocorrencias:=false;
+                    seleciona_carro(inicio, cod);
+                    if (ocorrencias = true) then
+                    begin
+                        write('Modelo: ');
+                        readln(c.modelo);
+    
+                        write('Marca: ');
+                        readln(c.marca);
+
+                        write('Cor: ');
+                        readln(c.cor);
+
+                        write('Ano: ');
+                        readln(c.ano);
+                    end
+                    else
+                        writeln('Nao encontrado');
+
                     comando:=0;
                     writeln('Tecle algo para continuar');
                     readln;
