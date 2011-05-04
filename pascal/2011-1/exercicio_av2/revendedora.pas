@@ -21,6 +21,7 @@ type
 var inicio, fim: lista;
     arq:arquivo;
     c:carro;
+    pc: ^carro;
     comando: integer;
     temp: string;
     temp_int: integer;
@@ -100,7 +101,7 @@ begin
     end
 else
     begin
-        writeln('arquivo non ecxiste');
+        {writeln('arquivo non ecxiste');}
         rewrite(arq);
         seek(arq, 0);
     end;
@@ -127,7 +128,7 @@ begin
         if (temp.codigo = codigo) then
         begin
             ocorrencias:=true;
-            c:=temp;
+            pc:=@l^.dados;
         end;
         seleciona_carro(l^.prox, codigo);
     end;
@@ -145,6 +146,7 @@ begin
     while (ocorrencias=true) do
     begin
         ocorrencias:=false;
+        {randomize;}
         c.codigo:=random(9999);
         codigo_unico(l, c.codigo);
     end;
@@ -175,60 +177,10 @@ begin
     writeln(c.codigo, ' ', c.modelo, ' ', c.marca, ' ',c.cor, ' ', c.ano)
 end;
 
-function listar(var sub_comando: integer; parametro: string): boolean;
-var c: carro;
-    ocorrencias: boolean;
-begin
-    clrscr;
-    ocorrencias:= false;
-    abrirArquivo;
-    seek(arq, 0);
-    while not eof(arq) do
-    begin
-        read(arq, c);
-        {filtros}
-        if (( sub_comando = 0 )and (parametro = '')) then
-        begin
-            imprime_carro(c);
-            ocorrencias:=true;
-        end
-        else
-            begin
-                case sub_comando of
-                    1: begin
-                        if (c.marca = parametro) then
-                            begin
-                                imprime_carro(c);
-                                ocorrencias:=true;
-                            end;
-                       end;
-                        
-                    2: begin
-                        if (c.modelo = parametro) then
-                            begin
-                                imprime_carro(c);
-                                ocorrencias:=true;
-                            end;
-                       end;
-                    
-                    3: begin
-                        if (c.cor = parametro) then
-                            begin
-                                imprime_carro(c);
-                                ocorrencias:=true;
-                            end;
-                       end;
-                end;
-            end;
-    end;
-    close(arq);
-    writeln;
-    listar:=ocorrencias;
-end;
-
 procedure listar_lista(var l: lista; sub_comando: integer; parametro: string; ocorrencias: boolean);
 var temp: carro;
 begin
+    {writeln(sub_comando, parametro, ocorrencias);}
     if (l <> nil) then
     begin
         c:=l^.dados;
@@ -284,15 +236,41 @@ begin
     readln(sub_comando);
     write('Entre com a palavra chave: ');
     readln(parametro);
+    ocorrencias:=false;
     listar_lista(inicio, sub_comando, parametro, ocorrencias);
-
+    writeln(ocorrencias);
     if (ocorrencias = false) then
-        writeln('Carro nao encontrado');
+        writeln('Carro nao encontradocccc');
+end;
+
+procedure le_do_arquivo(var l: lista);
+begin
+    abrirArquivo;
+    seek(arq, 0);
+    while not eof(arq) do
+    begin
+        read(arq, c);
+        inserir(l, c);
+    end;
+    close(arq);
+    
+end;
+
+procedure salva_no_arquivo(var l: lista);
+var temp: carro;
+begin
+    if ( l <> nil ) then
+    begin
+        temp:=l^.dados;
+        write(arq, temp);
+        salva_no_arquivo(l^.prox);
+    end;
 end;
 
 {----------------------------------------------------------------------}
 begin
     inicializa_lista;
+    le_do_arquivo(inicio);
 
     comando := 0;
     while (comando <> 6) do
@@ -321,16 +299,16 @@ begin
                     if (ocorrencias = true) then
                     begin
                         write('Modelo: ');
-                        readln(c.modelo);
+                        readln(pc^.modelo);
     
                         write('Marca: ');
-                        readln(c.marca);
+                        readln(pc^.marca);
 
                         write('Cor: ');
-                        readln(c.cor);
+                        readln(pc^.cor);
 
                         write('Ano: ');
-                        readln(c.ano);
+                        readln(pc^.ano);
                     end
                     else
                         writeln('Nao encontrado');
@@ -340,6 +318,8 @@ begin
                     readln;
                     continue;
                 end;
+
+
             5:  begin 
                     temp:='';
                     temp_int:=0;
@@ -353,18 +333,11 @@ begin
                     readln;
                     continue;
                 end;
-       end;
-        { 
-        c.modelo:='fusca ';
-        inserir(inicio, c);
-        c.modelo:='uno ';
-        inserir(inicio, c);
-        c.modelo:='porche ';
-        inserir(inicio, c);
-        }
-        {writeln(inicio^.dados);}
-        {imprimir_tudo(inicio);}
-
+      end;
         read(comando);
     end;
-end.
+    abrirArquivo;
+    seek(arq, 0); 
+    salva_no_arquivo(inicio);
+    close(arq);
+ end.
