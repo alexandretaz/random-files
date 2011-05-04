@@ -146,7 +146,7 @@ begin
     while (ocorrencias=true) do
     begin
         ocorrencias:=false;
-        {randomize;}
+        randomize;
         c.codigo:=random(9999);
         codigo_unico(l, c.codigo);
     end;
