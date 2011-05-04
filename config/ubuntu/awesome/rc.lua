@@ -51,6 +51,7 @@ terminal = "x-terminal-emulator"
 editor = "gvim"
 editor_cmd = terminal .. " -e " .. editor
 
+
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
 -- If you do not like this or do not have such a key,
