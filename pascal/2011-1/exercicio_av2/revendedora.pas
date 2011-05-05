@@ -148,6 +148,9 @@ begin
         ocorrencias:=false;
         randomize;
         c.codigo:=random(9999);
+        while ( c.codigo < 1000) do
+            c.codigo:=random(9999);
+
         codigo_unico(l, c.codigo);
     end;
     
@@ -267,6 +270,28 @@ begin
     end;
 end;
 
+procedure deleta_entrada(var l: lista; var cod: integer; anterior: no );
+var temp: carro;
+begin
+    if ((l <> nil)) then
+    begin
+        temp:=l^.dados;
+        anterior:=l^;
+        if ( temp.codigo = cod ) then
+        begin
+            if ( anterior^ = nil ) then 
+            begin
+            end;
+            if ( l^.prox = nil ) then
+            begin
+            end;
+
+            writeln(temp.codigo);
+            anterior.prox:=l^.prox;
+            deleta_entrada(l^.prox, cod, anterior);
+        end;
+    end; 
+end;
 {----------------------------------------------------------------------}
 begin
     inicializa_lista;
@@ -318,7 +343,11 @@ begin
                     readln;
                     continue;
                 end;
-
+            4:  begin
+                    write('Entre com o codigo : ');
+                    readln(cod);
+                    {deleta_entrada(inicio, cod, nil);} 
+                end;
 
             5:  begin 
                     temp:='';
