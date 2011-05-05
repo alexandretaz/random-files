@@ -12,7 +12,6 @@ type
     lista = plista;
     no = record
         dados: carro;
-        {dados: integer;}
         prox: lista;
     end;
 
@@ -27,6 +26,7 @@ var inicio, fim: lista;
     temp_int: integer;
     ocorrencias: boolean;
     cod: integer;
+
 
 procedure inicializa_lista;
 begin
@@ -73,11 +73,7 @@ begin
 		fim:=aux;
 	end;
 end;
-{function primeiro(inicio: lista): carro;
-begin
-    primeiro:=inicio^.dados;
-end;
-}
+
 procedure imprimir_tudo(l: lista);
 var temp: carro;
 begin
@@ -101,7 +97,6 @@ begin
     end
 else
     begin
-        {writeln('arquivo non ecxiste');}
         rewrite(arq);
         seek(arq, 0);
     end;
@@ -174,180 +169,185 @@ begin
 
 end;
 
-
 procedure imprime_carro(var c:carro);
 begin
     writeln(c.codigo, ' ', c.modelo, ' ', c.marca, ' ',c.cor, ' ', c.ano)
 end;
 
-procedure listar_lista(var l: lista; sub_comando: integer; parametro: string; ocorrencias: boolean);
-var temp: carro;
-begin
-    {writeln(sub_comando, parametro, ocorrencias);}
-    if (l <> nil) then
+procedure listar_lista(var l: lista; sub_comando: integer; parametro: string; oco: boolean);
     begin
-        c:=l^.dados;
-        if (( sub_comando = 0 )and (parametro = '')) then
+        if (l <> nil) then
         begin
-            imprime_carro(c);
-            ocorrencias:=true;
-        end
-        else
+            c:=l^.dados;
+            if (( sub_comando = 0 )and (parametro = '')) then
             begin
-                case sub_comando of
-                    1: begin
-                        if (c.marca = parametro) then
-                            begin
-                                imprime_carro(c);
-                                ocorrencias:=true;
-                            end;
-                       end;
+                imprime_carro(c);
+                oco:=true;
+            end
+            else
+                begin
+                    case sub_comando of
+                        1: begin
+                            if (c.marca = parametro) then
+                                begin
+                                    imprime_carro(c);
+                                    oco:=true;
+                                end;
+                           end;
+                            
+                        2: begin
+                            if (c.modelo = parametro) then
+                                begin
+                                    imprime_carro(c);
+                                    oco:=true;
+                                end;
+                           end;
                         
-                    2: begin
-                        if (c.modelo = parametro) then
-                            begin
-                                imprime_carro(c);
-                                ocorrencias:=true;
-                            end;
-                       end;
-                    
-                    3: begin
-                        if (c.cor = parametro) then
-                            begin
-                                imprime_carro(c);
-                                ocorrencias:=true;
-                            end;
-                       end;
+                        3: begin
+                            if (c.cor = parametro) then
+                                begin
+                                    imprime_carro(c);
+                                    oco:=true;
+                                end;
+                           end;
+                    end;
                 end;
-            end;
-    listar_lista(l^.prox, sub_comando, parametro, ocorrencias );
-    end;
- end;
-
-procedure pesquisa;
-var sub_comando: integer;
-    parametro: string;
-begin
-    clrscr;
-    writeln('Pesquisa');
-    writeln();
-    writeln('1 - Por marca');
-    writeln('2 - Por modelo');
-    writeln('3 - Por cor');
-    writeln();
-    write('Entre com valor: ');
-    readln(sub_comando);
-    write('Entre com a palavra chave: ');
-    readln(parametro);
-    ocorrencias:=false;
-    listar_lista(inicio, sub_comando, parametro, ocorrencias);
-    writeln(ocorrencias);
-    if (ocorrencias = false) then
-        writeln('Carro nao encontradocccc');
-end;
-
-procedure le_do_arquivo(var l: lista);
-begin
-    abrirArquivo;
-    seek(arq, 0);
-    while not eof(arq) do
-    begin
-        read(arq, c);
-        inserir(l, c);
-    end;
-    close(arq);
-    
-end;
-
-procedure salva_no_arquivo(var l: lista);
-var temp: carro;
-begin
-    if ( l <> nil ) then
-    begin
-        temp:=l^.dados;
-        write(arq, temp);
-        salva_no_arquivo(l^.prox);
-    end;
-end;
-
-procedure deleta_entrada(var l: lista; var cod: integer; anterior: no );
-var temp: carro;
-begin
-    if ((l <> nil)) then
-    begin
-        temp:=l^.dados;
-        anterior:=l^;
-        if ( temp.codigo = cod ) then
-        begin
-            if ( anterior^ = nil ) then 
-            begin
-            end;
-            if ( l^.prox = nil ) then
-            begin
-            end;
-
-            writeln(temp.codigo);
-            anterior.prox:=l^.prox;
-            deleta_entrada(l^.prox, cod, anterior);
+        listar_lista(l^.prox, sub_comando, parametro, oco );
         end;
-    end; 
-end;
-{----------------------------------------------------------------------}
-begin
-    inicializa_lista;
-    le_do_arquivo(inicio);
+        if oco = true then
+            ocorrencias:= true
+        else
+            ocorrencias:=false
+     end;
 
-    comando := 0;
-    while (comando <> 6) do
+    procedure pesquisa;
+    var sub_comando: integer;
+        parametro: string;
     begin
-        mostrar_menu;
-        case comando of
-            1:  begin 
-                    cadastro_carro_lista(inicio, c);
-                    comando:=0;
-                    continue;
-                end;
-            2:  begin
-                    pesquisa();
-                    comando:=0;
-                    writeln('Tecle algo para continuar');
-                    readln;
-                    continue;
-                end;
+        clrscr;
+        writeln('Pesquisa');
+        writeln();
+        writeln('1 - Por marca');
+        writeln('2 - Por modelo');
+        writeln('3 - Por cor');
+        writeln();
+        write('Entre com valor: ');
+        readln(sub_comando);
+        write('Entre com a palavra chave: ');
+        readln(parametro);
+        ocorrencias:=false;
+        listar_lista(inicio, sub_comando, parametro, ocorrencias);
+        if (ocorrencias = false) then
+            writeln('Carro nao encontrado');
+    end;
 
-            3:  begin
-                    writeln;
-                    write('digite o codigo: ');
-                    readln(cod);
-                    ocorrencias:=false;
-                    seleciona_carro(inicio, cod);
-                    if (ocorrencias = true) then
-                    begin
-                        write('Modelo: ');
-                        readln(pc^.modelo);
-    
-                        write('Marca: ');
-                        readln(pc^.marca);
+    procedure le_do_arquivo(var l: lista);
+    begin
+        abrirArquivo;
+        seek(arq, 0);
+        while not eof(arq) do
+        begin
+            read(arq, c);
+            inserir(l, c);
+        end;
+        close(arq);
+        
+    end;
 
-                        write('Cor: ');
-                        readln(pc^.cor);
+    procedure salva_no_arquivo(var l: lista);
+    var temp: carro;
+    begin
+        if ( l <> nil ) then
+        begin
+            temp:=l^.dados;
+            write(arq, temp);
+            salva_no_arquivo(l^.prox);
+        end;
+    end;
 
-                        write('Ano: ');
-                        readln(pc^.ano);
-                    end
-                    else
-                        writeln('Nao encontrado');
-
-                    comando:=0;
-                    writeln('Tecle algo para continuar');
-                    readln;
-                    continue;
+    procedure deleta_entrada(var l: lista; var cod: integer; ultimo: boolean);
+    var temp: carro;
+        aux: plista;
+    begin
+        if ((l <> nil) and (ultimo = false)) then
+        begin
+            temp:=l^.dados;
+            if ( temp.codigo = cod ) then
+            begin
+                aux:=l^.prox;
+                if aux = nil then
+                begin
+                    l:=nil;
+                    ultimo:=true;
+                end
+                else
+                begin
+                    l^.prox:=aux^.prox;
+                    l^.dados:=aux^.dados;
                 end;
-            4:  begin
-                    write('Entre com o codigo : ');
-                    readln(cod);
-                    {deleta_entrada(inicio, cod, nil);} 
-                end;
+            end;
+            if ( ultimo <> true ) then
+                deleta_entrada(l^.prox, cod, ultimo);
+        end; 
+    end;
+    {----------------------------------------------------------------------}
+    begin
+        inicializa_lista;
+        le_do_arquivo(inicio);
+
+        comando := 0;
+        while (comando <> 6) do
+        begin
+            mostrar_menu;
+            case comando of
+                1:  begin 
+                        cadastro_carro_lista(inicio, c);
+                        comando:=0;
+                        continue;
+                    end;
+                2:  begin
+                        pesquisa();
+                        comando:=0;
+                        writeln('Tecle algo para continuar');
+                        readln;
+                        continue;
+                    end;
+
+                3:  begin
+                        writeln;
+                        write('digite o codigo: ');
+                        readln(cod);
+                        ocorrencias:=false;
+                        seleciona_carro(inicio, cod);
+                        if (ocorrencias = true) then
+                        begin
+                            write('Modelo: ');
+                            readln(pc^.modelo);
+        
+                            write('Marca: ');
+                            readln(pc^.marca);
+
+                            write('Cor: ');
+                            readln(pc^.cor);
+
+                            write('Ano: ');
+                            readln(pc^.ano);
+                        end
+                        else
+                            writeln('Nao encontrado');
+
+                        comando:=0;
+                        writeln('Tecle algo para continuar');
+                        readln;
+                        continue;
+                    end;
+                4:  begin
+                        write('Entre com o codigo : ');
+                        readln(cod);
+                        deleta_entrada(inicio, cod, false);
+                        comando:=0;
+                        continue;
+                    end;
 
             5:  begin 
                     temp:='';
@@ -356,7 +356,6 @@ begin
                     listar_lista(inicio, temp_int, temp, ocorrencias);
                     comando:=0;
                     ocorrencias:=false;
-                    {imprimir_tudo(inicio);}
                     writeln('Tecle algo para continuar');
                     readln;
                     readln;
@@ -365,6 +364,7 @@ begin
       end;
         read(comando);
     end;
+    erase(arq);
     abrirArquivo;
     seek(arq, 0); 
     salva_no_arquivo(inicio);
