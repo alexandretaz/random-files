@@ -1,3 +1,7 @@
+{TRABALHO DE PESQUISA E ORDENAÇÃO}
+{Nome:GALILEU DE SOUZA CAMARGO RA:410.104.987}
+{Nome:FERNANDO HENRIQUE RODRIGUES DA SILVA RA: 409203876 }
+
 program revendedora;
 uses crt;
 type
@@ -25,6 +29,7 @@ var inicio, fim: lista;
     temp: string;
     temp_int: integer;
     ocorrencias: boolean;
+    encontrado: boolean;
     cod: integer;
 
 
@@ -114,6 +119,8 @@ begin
     end;
 end;
 
+{Esta procedure seleciona posicao de memoria do carro escolhido e grava o endereco no ponteiro PC'}
+
 procedure seleciona_carro(l: lista; codigo: integer);
 var temp: carro;
 begin
@@ -128,6 +135,8 @@ begin
         seleciona_carro(l^.prox, codigo);
     end;
 end;
+
+{'Cadastrar Carro'}
 
 procedure cadastro_carro_lista(var l: lista; c: carro);
 begin
@@ -174,6 +183,8 @@ begin
     writeln(c.codigo, ' ', c.modelo, ' ', c.marca, ' ',c.cor, ' ', c.ano)
 end;
 
+{Lista os Carros e filtra os dados de acordo com a Pesquisa}
+
 procedure listar_lista(var l: lista; sub_comando: integer; parametro: string; oco: boolean);
     begin
         if (l <> nil) then
@@ -191,6 +202,7 @@ procedure listar_lista(var l: lista; sub_comando: integer; parametro: string; oc
                             if (c.marca = parametro) then
                                 begin
                                     imprime_carro(c);
+                                    encontrado:=true;
                                     oco:=true;
                                 end;
                            end;
@@ -199,6 +211,7 @@ procedure listar_lista(var l: lista; sub_comando: integer; parametro: string; oc
                             if (c.modelo = parametro) then
                                 begin
                                     imprime_carro(c);
+                                    encontrado:=true;
                                     oco:=true;
                                 end;
                            end;
@@ -207,6 +220,7 @@ procedure listar_lista(var l: lista; sub_comando: integer; parametro: string; oc
                             if (c.cor = parametro) then
                                 begin
                                     imprime_carro(c);
+                                    encontrado:=true;
                                     oco:=true;
                                 end;
                            end;
@@ -217,10 +231,12 @@ procedure listar_lista(var l: lista; sub_comando: integer; parametro: string; oc
         if oco = true then
             ocorrencias:= true
         else
-            ocorrencias:=false
+            ocorrencias:=false;
      end;
 
-    procedure pesquisa;
+{'Pesquisa Carro'}
+
+procedure pesquisa;
     var sub_comando: integer;
         parametro: string;
     begin
@@ -231,14 +247,15 @@ procedure listar_lista(var l: lista; sub_comando: integer; parametro: string; oc
         writeln('2 - Por modelo');
         writeln('3 - Por cor');
         writeln();
-        write('Entre com valor: ');
+        write(' Entre com valor: ');
         readln(sub_comando);
-        write('Entre com a palavra chave: ');
+        write(' Entre com a palavra chave: ');
         readln(parametro);
+        encontrado:=false;
         ocorrencias:=false;
-        listar_lista(inicio, sub_comando, parametro, ocorrencias);
-        if (ocorrencias = false) then
-            writeln('Carro nao encontrado');
+        listar_lista(inicio, sub_comando, parametro, false);
+        if (encontrado = false) then
+            writeln(' Carro nao encontrado ');
     end;
 
     procedure le_do_arquivo(var l: lista);
@@ -265,6 +282,8 @@ procedure listar_lista(var l: lista; sub_comando: integer; parametro: string; oc
         end;
     end;
 
+{'Exclui Carro'}
+    
     procedure deleta_entrada(var l: lista; var cod: integer; ultimo: boolean);
     var temp: carro;
         aux: plista;
@@ -290,8 +309,10 @@ procedure listar_lista(var l: lista; sub_comando: integer; parametro: string; oc
                 deleta_entrada(l^.prox, cod, ultimo);
         end; 
     end;
-    {----------------------------------------------------------------------}
-    begin
+    
+{'Programa Principal'}
+    
+	begin
         inicializa_lista;
         le_do_arquivo(inicio);
 
@@ -362,8 +383,11 @@ procedure listar_lista(var l: lista; sub_comando: integer; parametro: string; oc
                     continue;
                 end;
       end;
-        read(comando);
+      read(comando);
     end;
+
+{'Finalizar sistema e grava os dados da lista no arquivo'}
+    
     erase(arq);
     abrirArquivo;
     seek(arq, 0); 
