@@ -1,0 +1,11 @@
+Você precisa de python e pygame para executar o jogo.
+
+execute com : python azedo.py
+
+Qualquer semelhança com personagens ficticios ou reais é mera coincidência.
+
+O código não é meu, portanto tudo é problema seu :)
+
+  " "
+/(0.0)\
+
