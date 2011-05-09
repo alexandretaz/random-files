@@ -308,7 +308,7 @@ cat ~/Documents/TXTS/vous.txt
 ..cpflv(){
 for i in `lsof | grep chro | grep deleted | grep Flash | awk '{print $2}' | sort | uniq`;do
     cd /proc/$i/fd/;
-    for k in `ls -l | grep deleted | awk {'print $8'}`;do
+    for k in `ls -l | grep deleted | awk {'print $9'}`;do
         cp $k ~/Desktop
     done
 done
@@ -317,7 +317,7 @@ done
 ..playflv(){
 for i in `lsof | grep chro | grep deleted | grep Flash | awk '{print $2}' | sort | uniq`;do
     cd /proc/$i/fd/;
-    for k in `ls -l | grep deleted | awk {'print $8'}`;do
+    for k in `ls -l | grep deleted | awk {'print $9'}`;do
         mplayer $k
     done
 done
