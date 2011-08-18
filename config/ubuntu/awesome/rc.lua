@@ -266,6 +266,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,    }, "z", function () awful.util.spawn(terminal .. " -e htop") end),
     awful.key({ modkey,    }, "a", function () awful.util.spawn(terminal .. " -e dstat") end),
     awful.key({ modkey,    }, "s", function () awful.util.spawn(terminal .. " -e alsamixer") end),
+    awful.key({ modkey,    }, "d", function () awful.util.spawn(terminal .. " -e 'pms -h 192.168.1.123'") end),
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
 
