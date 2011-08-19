@@ -35,6 +35,7 @@ set ts=4
 set sw=4
 set smartindent
 "set number
+set mouse=a
 autocmd FileType python runtime! autoload/pythoncomplete.vim
 
 filetype plugin on
