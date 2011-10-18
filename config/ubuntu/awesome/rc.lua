@@ -47,7 +47,7 @@ awful.hooks.timer.register(10, function() memoryinfo.text = activeram() end)
 awful.hooks.timer.register(10, function() cpuinfo.text = activecpu() end)
 
 -- This is used later as the default terminal and editor to run.
-terminal = "x-terminal-emulator"
+terminal = "x-terminal-emulator -rv -ls -sl 10000"
 editor = "gvim"
 editor_cmd = terminal .. " -e " .. editor
 
