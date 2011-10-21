@@ -9,7 +9,6 @@ package av3;
 
 public class Livro
 {
-    // instance variables - replace the example below with your own
     public int codigo;
     public String title;
     public String genero;

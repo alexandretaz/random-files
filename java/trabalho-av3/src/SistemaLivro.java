@@ -7,10 +7,10 @@ import javax.swing.*;
  * @author (Fernando Silva) 
  * @version (0.0.1)
  */
+
 public class SistemaLivro
 {
     public static void main (String[] args){
-        Livro l = new Livro(1,"asdf","sdf","asdf"); 
 
         String input, message;
         int resposta, i, codigo, resultado;
@@ -55,7 +55,6 @@ public class SistemaLivro
                     vetor[i].title = JOptionPane.showInputDialog("título");
                     vetor[i].autor = JOptionPane.showInputDialog("autor");
                     vetor[i].genero = JOptionPane.showInputDialog("gênero");
-                    //System.out.println(vetor[i].title + vetor[i].autor + vetor[i].genero );
                     break;
 
                 case 3:
@@ -111,7 +110,6 @@ public class SistemaLivro
                     message="";
                     for (int k =0; k< 5; k++)
                     {
-                        //System.out.println("Código: "+ vetor[k].codigo + " Título: " + vetor[k].title + " Autor: " +  vetor[k].autor + " Gênero: " + vetor[k].genero );
                         message = message + "Código: "+ vetor[k].codigo + " Título: " + vetor[k].title + " Autor: " +  vetor[k].autor + " Gênero: " + vetor[k].genero + "\n";
                     }
                     JOptionPane.showMessageDialog(null, message);
