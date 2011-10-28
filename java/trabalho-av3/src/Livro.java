@@ -2,27 +2,27 @@
 /**
  * Write a description of class Livro here.
  * 
- * @author (Fernando Silva) 
- * @version (0.0.1)
+ * @author (Alexandre Andrade) 
+ * @version (0.1)
  */
 package av3;
 
 public class Livro
 {
     public int codigo;
-    public String title;
+    public String titulo;
     public String genero;
     public String autor; 
 
     /**
      * Constructor for objects of class Livro
      */
-    public Livro(int c, String t, String g, String a)
+    public Livro(int cod, String tit, String gen, String at)
     {
-        codigo = c;
-        title = t;
-        genero = g;
-        autor = a;
+        codigo = cod;
+        titulo = tit;
+        genero = gen;
+        autor = at;
         
     }
 
